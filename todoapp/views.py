@@ -19,3 +19,9 @@ def delete(request, pk):
     todo = Todo.objects.get(id=pk)
     todo.delete()
     return redirect('/')
+
+def loginPage(request):
+    return render(request, 'login&Signup.html')
+
+def registerPage(request):
+    return render(request, 'login&Signup.html')

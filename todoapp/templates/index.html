@@ -7,6 +7,8 @@
       body {
         margin: 0;
         min-width: 250px;
+        font-family: Arial, sans-serif;
+        overflow-x: hidden; /* Hide horizontal scrollbar */
       }
 
       * {
@@ -16,6 +18,7 @@
       ul {
         margin: 0;
         padding: 0;
+        list-style-type: none;
       }
 
       ul li {
@@ -87,33 +90,40 @@
 
       .header {
         background-color: #329ba8;
-        padding: 30px 40px;
+        padding: 20px;
         color: white;
         text-align: center;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
       }
 
-      .header:after {
-        content: "";
-        display: table;
-        clear: both;
+      .header h2 {
+        margin: 5px;
+        flex-grow: 1;
+      }
+
+      .header form {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
       }
 
       input {
         margin: 0;
         border: none;
         border-radius: 0;
-        width: 60%;
         padding: 10px;
-        float: left;
         font-size: 16px;
+        margin-right: 10px;
+        flex-grow: 1;
       }
 
       .addBtn {
         padding: 10px;
-        width: 20%;
         background: #d9d9d9;
         color: #555;
-        float: left;
         text-align: center;
         font-size: 16px;
         cursor: pointer;
@@ -125,53 +135,58 @@
         background-color: #bbb;
       }
 
-      .loginBtn,
-      .searchBtn {
+      .nav-links {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-links a {
         text-decoration: none;
         color: white;
-        margin-left: 10px;
         font-size: 16px;
+        margin-left: 15px;
       }
 
       .search-container {
-        float: right;
+        display: flex;
+        align-items: center;
       }
 
       .search-box {
         padding: 10px;
-        margin-top: 10px;
-        width: 200px;
+        margin-right: 10px;
         border: none;
         border-radius: 0;
         font-size: 16px;
-      }
-      .search-container {
-        float: right;
       }
 
-      .search-container input[type="text"] {
+      .searchBtn {
         padding: 10px;
-        margin-top: 8px;
-        margin-right: 16px;
-        border: none;
-        font-size: 16px;
+        background: #329ba8;
+        cursor: pointer;
+        transition: 0.3s;
         border-radius: 0;
+      }
+
+      .searchBtn:hover {
+        background-color: #217a8f;
       }
     </style>
   </head>
   <body>
     <div id="myDIV" class="header">
-      <h2 style="margin: 5px">Django To Do List App</h2>
+      <h2>Django To Do List App</h2>
       <form action="" method="POST">
         {% csrf_token %}
         <input type="text" name="title" id="myInput" placeholder="Title..." />
         <button type="submit" class="addBtn">Add</button>
       </form>
-      <a class="loginBtn" href="#">Login</a>
-
-      <div class="search-container">
-        <input type="text" placeholder="Search..." class="search-box" />
-        <a class="searchBtn" href="#">Search</a>
+      <div class="nav-links">
+        <a href="{% url 'login' %}" class="loginBtn">Login</a>
+        <div class="search-container">
+          <input type="text" placeholder="Search..." class="search-box" />
+          <a class="searchBtn" href="#">Search</a>
+        </div>
       </div>
     </div>
 
