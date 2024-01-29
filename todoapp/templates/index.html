@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Django To Do List App</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Django To-Do List App</title>
     <style>
       body {
         margin: 0;
         min-width: 250px;
-        font-family: Arial, sans-serif;
-        overflow-x: hidden; /* Hide horizontal scrollbar */
+        font-family: "Arial", sans-serif;
+        overflow-x: hidden;
+        background-color: #f8f8f8;
       }
 
       * {
@@ -24,11 +26,15 @@
       ul li {
         cursor: pointer;
         position: relative;
-        padding: 12px 8px 12px 40px;
+        padding: 12px;
         list-style-type: none;
-        background: #eee;
+        background: #fff;
         font-size: 18px;
         transition: 0.2s;
+        border: 1px solid #ddd;
+        margin-bottom: 8px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
         -webkit-user-select: none;
         -moz-user-select: none;
@@ -41,19 +47,19 @@
       }
 
       ul li:hover {
-        background: #ddd;
+        background: #f0f0f0;
       }
 
       ul li.checked {
-        background: #888;
-        color: #fff;
+        background: #c5e1a5;
+        color: #555;
         text-decoration: line-through;
       }
 
       ul li.checked::before {
         content: "";
         position: absolute;
-        border-color: #fff;
+        border-color: #555;
         border-style: solid;
         border-width: 0 2px 2px 0;
         top: 10px;
@@ -68,18 +74,17 @@
         position: absolute;
         padding: 12px 16px;
         top: 0;
+        color: #fff;
       }
 
       .close {
         right: 0;
-        background-color: #f44336;
-        color: white;
+        background-color: #e57373;
       }
 
       .edit {
-        right: 80px; /* Adjust the value to add space between Edit and Delete buttons */
-        background-color: #4caf50;
-        color: white;
+        right: 100px;
+        background-color: #81c784;
       }
 
       .close:hover,
@@ -89,19 +94,20 @@
       }
 
       .header {
-        background-color: #329ba8;
+        background-color: #000000;
         padding: 20px;
-        color: white;
+        color: rgb(255, 255, 255);
         text-align: center;
         display: flex;
-        flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
 
       .header h2 {
         margin: 5px;
         flex-grow: 1;
+        font-size: 24px;
       }
 
       .header form {
@@ -112,27 +118,30 @@
 
       input {
         margin: 0;
-        border: none;
-        border-radius: 0;
-        padding: 10px;
+        border-style: solid;
+        border-color: rgb(0, 0, 0);
+        border-radius: 5px;
+        padding: 12px;
         font-size: 16px;
-        margin-right: 10px;
         flex-grow: 1;
+        margin-right: 10px;
       }
 
       .addBtn {
-        padding: 10px;
-        background: #d9d9d9;
-        color: #555;
+        width: 260px;
+        padding: 12px;
+        background: #64b5f6;
+        color: #fff;
         text-align: center;
         font-size: 16px;
         cursor: pointer;
         transition: 0.3s;
-        border-radius: 0;
+        border-radius: 5px;
+        border: none;
       }
 
       .addBtn:hover {
-        background-color: #bbb;
+        background-color: #42a5f5;
       }
 
       .nav-links {
@@ -153,19 +162,21 @@
       }
 
       .search-box {
-        padding: 10px;
+        padding: 12px;
         margin-right: 10px;
         border: none;
-        border-radius: 0;
+        border-radius: 5px;
         font-size: 16px;
       }
 
       .searchBtn {
-        padding: 10px;
+        padding: 12px;
         background: #329ba8;
         cursor: pointer;
         transition: 0.3s;
-        border-radius: 0;
+        border-radius: 5px;
+        border: none;
+        color: #fff;
       }
 
       .searchBtn:hover {
@@ -176,36 +187,57 @@
   <body>
     <div id="myDIV" class="header">
       <h2>Django To Do List App</h2>
-      <form action="" method="POST">
+      <div class="search-container">
+        <form
+          action=""
+          method="GET"
+          class="header form"
+          style="background-color: transparent"
+        >
+          <input
+            type="text"
+            name="search"
+            placeholder="Search..."
+            class="search-box"
+          />
+          <button type="submit" class="searchBtn">Search</button>
+        </form>
+      </div>
+      <div class="nav-links">
+        <a href="{% url 'login' %}" class="loginBtn">Login</a>
+      </div>
+    </div>
+    <br />
+    <div class="input-container">
+      <form
+        action=""
+        method="POST"
+        class="header form"
+        style="background-color: transparent"
+      >
         {% csrf_token %}
         <input type="text" name="title" id="myInput" placeholder="Title..." />
         <button type="submit" class="addBtn">Add</button>
       </form>
-      <div class="nav-links">
-        <a href="{% url 'login' %}" class="loginBtn">Login</a>
-        <div class="search-container">
-          <input type="text" placeholder="Search..." class="search-box" />
-          <a class="searchBtn" href="#">Search</a>
-        </div>
-      </div>
     </div>
 
     <ul id="myUL">
       {% for todo in todos reversed %}
       <li>
         {{ todo.title | title }}
-        <span class="close">
-          <a
-            style="text-decoration: none; color: white"
-            href="delete/{{ todo.id }}"
-            >Delete</a
-          >
-        </span>
+
         <span class="edit">
           <a
             style="text-decoration: none; color: white"
             href="edit/{{ todo.id }}"
             >Edit</a
+          >
+        </span>
+        <span class="close">
+          <a
+            style="text-decoration: none; color: white"
+            href="delete/{{ todo.id }}"
+            >Delete</a
           >
         </span>
       </li>
